@@ -16,27 +16,22 @@ class Vehicle
   }
 
   def initialize(type, distance)
-    @type = set_type(type, distance)
+    @type = detect_type(type, distance)
+
+    raise 'Unquotable' unless @type
+
     @fee = EXTRA_FEES[@type.to_sym]
   end
 
   private
-  def set_type(type, distance)
-    if MAX_DISTANCES[type.to_sym] > distance
-      return type
-    end
-
-    type = calculate_type(distance)
-
-    unless type.nil?
-      type[0]
-    else
-      raise 'Unquotable'
-    end
+  def detect_type(type, distance)
+    MAX_DISTANCES[type.to_sym] > distance ? type : calculate_type(distance)
   end
 
   def calculate_type(distance)
-    MAX_DISTANCES.detect { |k, v| v >= distance }
+    matching_type = MAX_DISTANCES.detect { |k, v| v >= distance }
+
+    matching_type.nil? ? nil : matching_type[0]
   end
 
 end

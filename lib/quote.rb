@@ -1,3 +1,5 @@
+require_relative 'vehicle'
+
 class Quote
   attr_reader :from, :to
 
